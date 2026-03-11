@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevDut Knowledge Hub — Blockchain · Technopedia · EMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0f;
+    --surface: #0c1520;
+    --card: #111e2d;
+    --border: #1a2e44;
+    --accent1: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff7e;
+    --accent4: #bf5fff;
+    --text: #e8f4fd;
+    --muted: #6b8ba4;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* === NAV === */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(5,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--accent1);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent2); }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--accent1);
+    border-color: var(--accent1);
+    background: rgba(0,212,255,0.08);
+  }
+
+  /* === PAGE SYSTEM === */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding-top: 64px;
+  }
+
+  .page.active { display: block; }
+
+  /* === HERO (PAGE 1) === */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+  }
+
+  .hero-orb1 {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  .hero-orb2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,107,53,0.10) 0%, transparent 70%);
+    bottom: 0; right: 0;
+    animation: pulse 8s ease-in-out infinite reverse;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent3);
+    border: 1px solid var(--accent3);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s ease 0.1s both;
+  }
+
+  .hero-title .line2 { color: var(--accent1); }
+  .hero-title .line3 { color: var(--accent2); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    animation: fadeUp 0.7s ease 0.2s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s ease 0.3s both;
+  }
+
+  .btn-primary {
+    background: var(--accent1);
+    color: var(--bg);
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.8rem 2rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  .hero-stats {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeUp 0.7s ease 0.4s both;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--accent1);
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTION LAYOUT === */
+  .section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 680px;
+    margin-bottom: 3rem;
+  }
+
+  /* === CARDS === */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.3); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .card-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+
+  .card-body {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .card-accent1::before { background: linear-gradient(90deg, transparent, var(--accent1), transparent); }
+  .card-accent2::before { background: linear-gradient(90deg, transparent, var(--accent2), transparent); }
+  .card-accent3::before { background: linear-gradient(90deg, transparent, var(--accent3), transparent); }
+  .card-accent4::before { background: linear-gradient(90deg, transparent, var(--accent4), transparent); }
+
+  /* === BLOCKCHAIN SPECIFIC === */
+  .chain-visual {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding: 2rem 0;
+    align-items: center;
+  }
+
+  .block-node {
+    min-width: 160px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+
+  .block-node:hover { border-color: var(--accent1); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+
+  .block-num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent1);
+    margin-bottom: 0.5rem;
+  }
+
+  .block-hash {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--muted);
+    word-break: break-all;
+    margin-bottom: 0.5rem;
+  }
+
+  .block-data {
+    font-size: 0.75rem;
+    color: var(--text);
+  }
+
+  .chain-arrow {
+    font-size: 1.5rem;
+    color: var(--accent1);
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* === CONSENSUS TABLE === */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  thead {
+    background: var(--card);
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent1);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.85rem 1.25rem;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(26,46,68,0.5);
+    vertical-align: top;
+  }
+
+  tr:hover td { background: rgba(0,212,255,0.04); color: var(--text); }
+
+  /* === TECH BADGE === */
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 3px;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent1);
+    margin: 0.2rem;
+  }
+
+  .tech-badge.orange { background: rgba(255,107,53,0.08); border-color: rgba(255,107,53,0.2); color: var(--accent2); }
+  .tech-badge.green { background: rgba(57,255,126,0.08); border-color: rgba(57,255,126,0.2); color: var(--accent3); }
+  .tech-badge.purple { background: rgba(191,95,255,0.08); border-color: rgba(191,95,255,0.2); color: var(--accent4); }
+
+  /* === TIMELINE === */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent1), var(--accent4), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.35rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent1);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px var(--accent1);
+  }
+
+  .timeline-year {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* === CODE BLOCK === */
+  .code-block {
+    background: #060d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  .code-block .kw { color: var(--accent4); }
+  .code-block .fn { color: var(--accent1); }
+  .code-block .str { color: var(--accent3); }
+  .code-block .num { color: var(--accent2); }
+  .code-block .cm { color: var(--muted); }
+  .code-block .type { color: #ffcc44; }
+
+  .code-lang {
+    position: absolute;
+    top: 0.75rem; right: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* === EMS SPECIFIC === */
+  .ems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .ems-metric {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ems-metric::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent3);
+  }
+
+  .ems-value {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: var(--accent3);
+    margin-bottom: 0.25rem;
+  }
+
+  .ems-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* === PROGRESS BAR === */
+  .progress-bar {
+    background: var(--border);
+    border-radius: 99px;
+    height: 6px;
+    overflow: hidden;
+    margin-top: 0.4rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent3));
+    transition: width 1s ease;
+  }
+
+  /* === QUIZ === */
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .quiz-q {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .quiz-options { display: grid; gap: 0.75rem; }
+
+  .quiz-opt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: var(--font-body);
+  }
+
+  .quiz-opt:hover { border-color: var(--accent1); background: rgba(0,212,255,0.06); }
+  .quiz-opt.correct { border-color: var(--accent3); background: rgba(57,255,126,0.1); color: var(--accent3); }
+  .quiz-opt.wrong { border-color: var(--accent2); background: rgba(255,107,53,0.1); color: var(--accent2); }
+
+  .quiz-feedback {
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    display: none;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(57,255,126,0.1); color: var(--accent3); border: 1px solid rgba(57,255,126,0.3); }
+  .quiz-feedback.err { background: rgba(255,107,53,0.1); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+
+  .quiz-nav { margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: space-between; align-items: center; }
+
+  .quiz-counter { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+
+  /* === GLOSSARY === */
+  .glossary-list { display: grid; gap: 0.75rem; }
+
+  .glossary-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1rem;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+
+  .glossary-item:hover { border-color: rgba(0,212,255,0.3); }
+
+  .glossary-term {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent1);
+    font-weight: 700;
+    padding-top: 0.1rem;
+  }
+
+  .glossary-def { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* === SEARCH === */
+  .search-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--accent1); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .search-btn {
+    background: var(--accent1);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .search-btn:hover { background: #fff; }
+
+  /* === FOOTER === */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--surface);
+  }
+
+  .footer-logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--accent1);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-logo span { color: var(--accent2); }
+
+  .footer-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent1); }
+
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(107,139,164,0.5);
+    font-family: var(--font-mono);
+  }
+
+  /* === PAGE HERO MINI === */
+  .page-hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .page-hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+
+  .page-hero-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* === TWO COL === */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    .glossary-item { grid-template-columns: 1fr; }
+    .chain-visual { flex-direction: column; align-items: stretch; }
+    .chain-arrow { transform: rotate(90deg); text-align: center; }
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  /* === HIGHLIGHT BOX === */
+  .highlight-box {
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .highlight-box.orange {
+    background: rgba(255,107,53,0.06);
+    border-color: rgba(255,107,53,0.2);
+  }
+
+  .highlight-box.green {
+    background: rgba(57,255,126,0.06);
+    border-color: rgba(57,255,126,0.2);
+  }
+
+  .highlight-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent1);
+  }
+
+  .highlight-title.orange { color: var(--accent2); }
+  .highlight-title.green { color: var(--accent3); }
+
+  .highlight-text { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+  /* === MOBILE MENU TOGGLE === */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .menu-toggle { display: block; }
+    .nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem; flex-direction: column; gap: 0.25rem; z-index: 999; }
+    .nav-links.open { display: flex; }
+  }
+
+  /* Color accent variants for page heroes */
+  .accent-blue .page-hero-title em { color: var(--accent1); font-style: normal; }
+  .accent-orange .page-hero-title em { color: var(--accent2); font-style: normal; }
+  .accent-green .page-hero-title em { color: var(--accent3); font-style: normal; }
+  .accent-purple .page-hero-title em { color: var(--accent4); font-style: normal; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">Dev<span>Dut</span>.in</a>
+  <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="showPage('blockchain-intro')" id="nav-blockchain-intro">Blockchain</a></li>
+    <li><a onclick="showPage('crypto-assets')" id="nav-crypto-assets">Crypto</a></li>
+    <li><a onclick="showPage('smart-contracts')" id="nav-smart-contracts">Smart Contracts</a></li>
+    <li><a onclick="showPage('technopedia')" id="nav-technopedia">Technopedia</a></li>
+    <li><a onclick="showPage('ems-overview')" id="nav-ems-overview">EMS Overview</a></li>
+    <li><a onclick="showPage('ems-protocols')" id="nav-ems-protocols">EMS Protocols</a></li>
+    <li><a onclick="showPage('ems-tech')" id="nav-ems-tech">EMS Tech</a></li>
+    <li><a onclick="showPage('glossary')" id="nav-glossary">Glossary</a></li>
+    <li><a onclick="showPage('quiz')" id="nav-quiz">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- ===== PAGE 1: HOME ===== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+    <div class="hero-content">
+      <span class="hero-tag">// devdut.in — Knowledge Hub v1.0</span>
+      <h1 class="hero-title">
+        Master<br>
+        <span class="line2">Blockchain &amp; Web3</span><br>
+        <span class="line3">EMS · Technopedia</span>
+      </h1>
+      <p class="hero-sub">A comprehensive knowledge platform exploring decentralized systems, emergency medical services, and the technology encyclopedia — all in one place.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="showPage('blockchain-intro')">Start Learning →</button>
+        <button class="btn-outline" onclick="showPage('quiz')">Take the Quiz</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">10</div>
+          <div class="stat-label">Knowledge Pages</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Core Topics</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Learning Path</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topics overview -->
+  <div class="section">
+    <div class="section-tag">// What You'll Learn</div>
+    <h2 class="section-title">Three Pillars of Modern Knowledge</h2>
+    <p class="section-desc">Dive deep into the technologies shaping the future — from trustless distributed ledgers to life-saving emergency protocols.</p>
+    <div class="card-grid">
+      <div class="card card-accent1" onclick="showPage('blockchain-intro')" style="cursor:pointer">
+        <span class="card-icon">⛓️</span>
+        <div class="card-title">Blockchain Technology</div>
+        <div class="card-body">Distributed ledgers, consensus mechanisms, cryptographic hashing, DeFi, NFTs, Layer 2 scaling, and the future of trustless systems.</div>
+        <div style="margin-top:1rem">
+          <span class="tech-badge">Bitcoin</span>
+          <span class="tech-badge">Ethereum</span>
+          <span class="tech-badge">Web3</span>
+        </div>
+      </div>
+      <div class="card card-accent2" onclick="showPage('technopedia')" style="cursor:pointer">
+        <span class="card-icon">📡</span>
+        <div class="card-title">Technopedia</div>
+        <div class="card-body">The technology encyclopedia — AI, Cloud Computing, IoT, Cybersecurity, Quantum Computing, and every term in the modern tech stack.</div>
+        <div style="margin-top:1rem">
+          <span class="tech-badge orange">AI / ML</span>
+          <span class="tech-badge orange">Cloud</span>
+          <span class="tech-badge orange">IoT</span>
+        </div>
+      </div>
+      <div class="card card-accent3" onclick="showPage('ems-overview')" style="cursor:pointer">
+        <span class="card-icon">🚑</span>
+        <div class="card-title">EMS Knowledge</div>
+        <div class="card-body">Emergency Medical Services — triage protocols, life support, dispatch systems, medical devices, and the digital transformation of emergency care.</div>
+        <div style="margin-top:1rem">
+          <span class="tech-badge green">Triage</span>
+          <span class="tech-badge green">BLS / ALS</span>
+          <span class="tech-badge green">CAD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: BLOCKCHAIN INTRO ===== -->
+<div id="page-blockchain-intro" class="page accent-blue">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 2 — Blockchain Fundamentals</div>
+      <h1 class="page-hero-title"><em>Blockchain</em> Explained</h1>
+      <p class="page-hero-desc">A distributed, immutable ledger technology that enables trustless, peer-to-peer transactions without intermediaries.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="two-col">
+      <div>
+        <div class="section-tag">// Core Concept</div>
+        <h2 class="section-title" style="font-size:1.8rem">What is a Blockchain?</h2>
+        <p style="color:var(--muted);font-size:0.95rem;line-height:1.75;margin-bottom:1.25rem">A blockchain is a continuously growing list of records, called <strong style="color:var(--text)">blocks</strong>, which are linked and secured using cryptography. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data.</p>
+        <p style="color:var(--muted);font-size:0.95rem;line-height:1.75;margin-bottom:1.25rem">The blockchain is managed by a peer-to-peer network collectively adhering to a protocol for inter-node communication and validating new blocks. Once recorded, data in a given block cannot be altered retroactively — this is what makes blockchain revolutionary.</p>
+        <div class="highlight-box">
+          <div class="highlight-title">Key Property: Immutability</div>
+          <div class="highlight-text">Each block contains the hash of the previous block. If you change block #3, its hash changes, invalidating block #4, #5... all the way to the current block. This chain of cryptographic proof is what makes tampering computationally infeasible.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-tag">// Properties</div>
+        <h3 style="font-family:var(--font-head);font-weight:700;font-size:1.1rem;margin-bottom:1rem">Six Core Properties</h3>
+        <div style="display:grid;gap:0.75rem">
+          <div class="card" style="padding:1rem">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent1)">🔗 Decentralization</div>
+            <div class="card-body" style="font-size:0.8rem">No single point of control or failure. Nodes across the globe maintain copies.</div>
+          </div>
+          <div class="card" style="padding:1rem">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent3)">🔒 Immutability</div>
+            <div class="card-body" style="font-size:0.8rem">Recorded data cannot be changed without consensus of the network.</div>
+          </div>
+          <div class="card" style="padding:1rem">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent2)">👁️ Transparency</div>
+            <div class="card-body" style="font-size:0.8rem">All transactions are visible to participants; public chains are open to anyone.</div>
+          </div>
+          <div class="card" style="padding:1rem">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent4)">⚡ Trustlessness</div>
+            <div class="card-body" style="font-size:0.8rem">Smart contracts enforce rules automatically — no trust in a third party needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-tag">// Interactive Visual</div>
+    <h3 style="font-family:var(--font-head);font-weight:700;font-size:1.2rem;margin-bottom:1.5rem">A Simplified Blockchain</h3>
+    <div class="chain-visual">
+      <div class="block-node">
+        <div class="block-num">BLOCK #0 (Genesis)</div>
+        <div class="block-hash">Hash: 0000a3f7b...</div>
+        <div class="block-hash">Prev: 000000000</div>
+        <div class="block-data">Data: "Genesis Block"</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="block-node">
+        <div class="block-num">BLOCK #1</div>
+        <div class="block-hash">Hash: 1a2b3c4d5e...</div>
+        <div class="block-hash">Prev: 0000a3f7b...</div>
+        <div class="block-data">Tx: Alice→Bob 1 BTC</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="block-node">
+        <div class="block-num">BLOCK #2</div>
+        <div class="block-hash">Hash: f9e8d7c6b5...</div>
+        <div class="block-hash">Prev: 1a2b3c4d5e...</div>
+        <div class="block-data">Tx: Bob→Carol 0.5 BTC</div>
+      </div>
+      <div class="chain-arrow">→</div>
+      <div class="block-node">
+        <div class="block-num">BLOCK #3</div>
+        <div class="block-hash">Hash: 7f6e5d4c3b...</div>
+        <div class="block-hash">Prev: f9e8d7c6b5...</div>
+        <div class="block-data">Tx: Carol→Dave 0.2 ETH</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3 style="font-family:var(--font-head);font-weight:700;font-size:1.2rem;margin-bottom:1.5rem">Blockchain Types</h3>
+    <div class="card-grid">
+      <div class="card card-accent1"><span class="card-icon">🌍</span><div class="card-title">Public Blockchain</div><div class="card-body">Open to anyone. Bitcoin, Ethereum. Fully decentralized, transparent, permissionless.</div></div>
+      <div class="card card-accent2"><span class="card-icon">🏢</span><div class="card-title">Private Blockchain</div><div class="card-body">Access controlled. Hyperledger Fabric. Used in enterprise environments for efficiency.</div></div>
+      <div class="card card-accent3"><span class="card-icon">🤝</span><div class="card-title">Consortium Blockchain</div><div class="card-body">Semi-decentralized. Governed by a group. R3 Corda. Common in banking consortia.</div></div>
+      <div class="card card-accent4"><span class="card-icon">🔀</span><div class="card-title">Hybrid Blockchain</div><div class="card-body">Combines public and private elements. Dragonchain. Flexible data visibility controls.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 3: CRYPTO ASSETS ===== -->
+<div id="page-crypto-assets" class="page accent-orange">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 3 — Cryptocurrency &amp; Digital Assets</div>
+      <h1 class="page-hero-title"><em>Crypto</em> Assets</h1>
+      <p class="page-hero-desc">From Bitcoin to DeFi — understanding digital currencies, tokens, NFTs, and the new financial system they're building.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="card-grid" style="margin-bottom:3rem">
+      <div class="card card-accent2"><span class="card-icon">₿</span><div class="card-title">Bitcoin (BTC)</div><div class="card-body">The original cryptocurrency. Fixed supply of 21 million. Proof-of-Work consensus. Digital gold and store of value. Created by Satoshi Nakamoto in 2008.</div></div>
+      <div class="card card-accent1"><span class="card-icon">Ξ</span><div class="card-title">Ethereum (ETH)</div><div class="card-body">Programmable blockchain. Enables smart contracts and dApps. Moved to Proof-of-Stake in 2022 (The Merge). Powers DeFi and NFT ecosystems.</div></div>
+      <div class="card card-accent3"><span class="card-icon">◎</span><div class="card-title">Stablecoins</div><div class="card-body">Pegged to fiat currencies. USDC, USDT, DAI. Bridging traditional finance and crypto. Essential for DeFi liquidity and on/off ramps.</div></div>
+      <div class="card card-accent4"><span class="card-icon">🖼️</span><div class="card-title">NFTs</div><div class="card-body">Non-Fungible Tokens. Unique digital ownership certificates on-chain. Use cases: art, gaming, identity, real-world asset tokenization.</div></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-tag">// DeFi Ecosystem</div>
+        <h2 class="section-title" style="font-size:1.8rem">Decentralized Finance</h2>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem">DeFi recreates financial instruments — lending, borrowing, trading, yield farming — using smart contracts and liquidity pools, removing banks from the equation.</p>
+        <div style="margin-bottom:0.5rem"><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem"><span>Uniswap (DEX)</span><span style="color:var(--accent1)">$4B+ TVL</span></div><div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div></div>
+        <div style="margin-bottom:0.5rem"><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem"><span>Aave (Lending)</span><span style="color:var(--accent1)">$6B+ TVL</span></div><div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div></div>
+        <div style="margin-bottom:0.5rem"><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem"><span>MakerDAO (Stablecoin)</span><span style="color:var(--accent1)">$5B+ TVL</span></div><div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div></div>
+        <div style="margin-bottom:0.5rem"><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem"><span>Compound (Lending)</span><span style="color:var(--accent1)">$2B+ TVL</span></div><div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div></div>
+      </div>
+      <div>
+        <div class="section-tag">// Consensus Mechanisms</div>
+        <h2 class="section-title" style="font-size:1.8rem">How Networks Agree</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mechanism</th><th>Used By</th><th>Energy</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--text)">Proof of Work (PoW)</td><td>Bitcoin, Litecoin</td><td style="color:var(--accent2)">High</td></tr>
+              <tr><td style="color:var(--text)">Proof of Stake (PoS)</td><td>Ethereum, Cardano</td><td style="color:var(--accent3)">Low</td></tr>
+              <tr><td style="color:var(--text)">Delegated PoS</td><td>EOS, TRON</td><td style="color:var(--accent3)">Low</td></tr>
+              <tr><td style="color:var(--text)">Proof of Authority</td><td>VeChain, BSC</td><td style="color:var(--accent3)">Very Low</td></tr>
+              <tr><td style="color:var(--text)">Proof of History</td><td>Solana</td><td style="color:var(--accent1)">Medium</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 4: SMART CONTRACTS ===== -->
+<div id="page-smart-contracts" class="page accent-purple">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 4 — Smart Contracts &amp; dApps</div>
+      <h1 class="page-hero-title"><em>Smart</em> Contracts</h1>
+      <p class="page-hero-desc">Self-executing code stored on the blockchain that automatically enforces the terms of an agreement — no lawyers, no intermediaries.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="two-col" style="margin-bottom:3rem">
+      <div>
+        <div class="section-tag">// Definition</div>
+        <h2 class="section-title" style="font-size:1.8rem">Code is Law</h2>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:1rem">Smart contracts are programs stored on a blockchain that run when predetermined conditions are met. They automate the execution of an agreement so all parties can be immediately certain of the outcome, without any intermediary's involvement or time loss.</p>
+        <div class="highlight-box" style="background:rgba(191,95,255,0.06);border-color:rgba(191,95,255,0.2)">
+          <div class="highlight-title" style="color:var(--accent4)">Nick Szabo's Vision (1994)</div>
+          <div class="highlight-text">Computer scientist Nick Szabo coined the term "smart contract" in 1994 — decades before blockchain made them feasible. He compared them to a vending machine: deposit coins, select product, machine executes automatically.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-tag">// Solidity Example</div>
+        <div class="code-block">
+          <span class="code-lang">Solidity</span>
+<span class="cm">// SPDX-License-Identifier: MIT</span>
+<span class="kw">pragma</span> solidity ^<span class="num">0.8.0</span>;
+
+<span class="kw">contract</span> <span class="type">SimpleEscrow</span> {
+  <span class="type">address</span> <span class="kw">public</span> buyer;
+  <span class="type">address</span> <span class="kw">public</span> seller;
+  <span class="type">uint</span>    <span class="kw">public</span> amount;
+  <span class="type">bool</span>   <span class="kw">public</span> released;
+
+  <span class="kw">constructor</span>(<span class="type">address</span> _seller) <span class="fn">payable</span> {
+    buyer  = msg.sender;
+    seller = _seller;
+    amount = msg.value;
+  }
+
+  <span class="kw">function</span> <span class="fn">release</span>() <span class="kw">external</span> {
+    <span class="kw">require</span>(msg.sender == buyer);
+    <span class="kw">require</span>(!released);
+    released = <span class="kw">true</span>;
+    <span class="fn">payable</span>(seller).<span class="fn">transfer</span>(amount);
+  }
+}</div>
+      </div>
+    </div>
+
+    <div class="section-tag">// Use Cases</div>
+    <h2 class="section-title" style="font-size:1.6rem">Real-World Applications</h2>
+    <div class="card-grid">
+      <div class="card card-accent4"><span class="card-icon">🏦</span><div class="card-title">DeFi Protocols</div><div class="card-body">Automated lending, borrowing, and trading without banks. Liquidity pools governed by smart contracts.</div></div>
+      <div class="card card-accent1"><span class="card-icon">🗳️</span><div class="card-title">DAOs</div><div class="card-body">Decentralized Autonomous Organizations. Governance tokens let holders vote; results execute automatically on-chain.</div></div>
+      <div class="card card-accent2"><span class="card-icon">🏠</span><div class="card-title">Real Estate</div><div class="card-body">Tokenized property ownership. Fractional investment. Automated rental payments and title transfers.</div></div>
+      <div class="card card-accent3"><span class="card-icon">📦</span><div class="card-title">Supply Chain</div><div class="card-body">Automated payments upon delivery verification. Immutable provenance tracking from farm to shelf.</div></div>
+      <div class="card card-accent4"><span class="card-icon">🎮</span><div class="card-title">Gaming &amp; NFTs</div><div class="card-body">Provably scarce in-game items. Play-to-earn mechanics. Royalties automatically paid to creators on resale.</div></div>
+      <div class="card card-accent1"><span class="card-icon">🏥</span><div class="card-title">Healthcare</div><div class="card-body">Patient-controlled medical records. Automated insurance claims. Clinical trial data integrity.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 5: TECHNOPEDIA ===== -->
+<div id="page-technopedia" class="page accent-orange">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 5 — Technology Encyclopedia</div>
+      <h1 class="page-hero-title">Tech<em>nopedia</em></h1>
+      <p class="page-hero-desc">Your comprehensive reference for modern technology — from AI to quantum computing, every concept explained.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="search-bar">
+      <input class="search-input" id="techSearch" type="text" placeholder="Search technologies... (AI, Cloud, IoT, Cybersecurity...)" oninput="filterTech()">
+      <button class="search-btn">Search</button>
+    </div>
+
+    <div id="techGrid" class="card-grid">
+      <div class="card card-accent1" data-tags="ai ml artificial intelligence"><span class="card-icon">🤖</span><div class="card-title">Artificial Intelligence</div><div class="card-body">Computer systems performing tasks requiring human intelligence. Machine learning, neural networks, NLP, and computer vision are subfields. Powers ChatGPT, recommendation engines, autonomous vehicles.</div></div>
+      <div class="card card-accent2" data-tags="cloud computing aws azure"><span class="card-icon">☁️</span><div class="card-title">Cloud Computing</div><div class="card-body">On-demand delivery of IT resources — servers, storage, databases, networking — over the internet. IaaS, PaaS, SaaS models. AWS, Azure, GCP are the big three.</div></div>
+      <div class="card card-accent3" data-tags="iot internet of things devices"><span class="card-icon">📱</span><div class="card-title">Internet of Things (IoT)</div><div class="card-body">Interconnected physical devices embedded with sensors and software. Smart homes, industrial monitoring, healthcare wearables, smart city infrastructure.</div></div>
+      <div class="card card-accent4" data-tags="cybersecurity security hacking"><span class="card-icon">🛡️</span><div class="card-title">Cybersecurity</div><div class="card-body">Protecting systems, networks, and programs from digital attacks. Zero-trust architecture, encryption, penetration testing, SIEM, and threat intelligence.</div></div>
+      <div class="card card-accent1" data-tags="quantum computing qubits"><span class="card-icon">⚛️</span><div class="card-title">Quantum Computing</div><div class="card-body">Harnessing quantum mechanical phenomena (superposition, entanglement) to process information. Promises breakthroughs in cryptography, drug discovery, and optimization.</div></div>
+      <div class="card card-accent2" data-tags="5g network wireless telecom"><span class="card-icon">📶</span><div class="card-title">5G Networks</div><div class="card-body">Fifth-generation wireless technology with ultra-low latency (&lt;1ms), massive bandwidth, and network slicing. Enables autonomous vehicles, remote surgery, and industrial automation.</div></div>
+      <div class="card card-accent3" data-tags="edge computing fog latency"><span class="card-icon">⚡</span><div class="card-title">Edge Computing</div><div class="card-body">Processing data near its source rather than in a centralized cloud. Reduces latency, bandwidth costs. Critical for real-time applications in factories and autonomous systems.</div></div>
+      <div class="card card-accent4" data-tags="devops cicd agile deployment"><span class="card-icon">🔄</span><div class="card-title">DevOps &amp; CI/CD</div><div class="card-body">Unifying software development and IT operations. Continuous Integration/Delivery enables teams to ship code faster and more reliably. Docker, Kubernetes, Jenkins.</div></div>
+      <div class="card card-accent1" data-tags="api rest graphql integration"><span class="card-icon">🔌</span><div class="card-title">APIs &amp; Microservices</div><div class="card-body">Application Programming Interfaces allow systems to communicate. Microservices architecture breaks apps into independent services for scalability and resilience.</div></div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-tag">// Technology Timeline</div>
+    <h2 class="section-title" style="font-size:1.6rem">Key Milestones</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-year">1969</div><div class="timeline-title">ARPANET — The Internet's Birth</div><div class="timeline-desc">The first packet-switching network, funded by DARPA, connecting 4 universities. The foundation of today's internet.</div></div>
+      <div class="timeline-item"><div class="timeline-year">1991</div><div class="timeline-title">World Wide Web</div><div class="timeline-desc">Tim Berners-Lee publishes the first web page. HTML and HTTP protocols democratize information access globally.</div></div>
+      <div class="timeline-item"><div class="timeline-year">2007</div><div class="timeline-title">iPhone & Mobile Revolution</div><div class="timeline-desc">Apple's touchscreen smartphone fundamentally changes computing, spawning the app economy and mobile-first design.</div></div>
+      <div class="timeline-item"><div class="timeline-year">2008</div><div class="timeline-title">Bitcoin Whitepaper</div><div class="timeline-desc">Satoshi Nakamoto publishes "Bitcoin: A Peer-to-Peer Electronic Cash System" — launching the blockchain era.</div></div>
+      <div class="timeline-item"><div class="timeline-year">2015</div><div class="timeline-title">Ethereum Mainnet</div><div class="timeline-desc">Vitalik Buterin's programmable blockchain goes live, enabling smart contracts and the DApp ecosystem.</div></div>
+      <div class="timeline-item"><div class="timeline-year">2022</div><div class="timeline-title">ChatGPT &amp; Generative AI</div><div class="timeline-desc">Large language models become mainstream. AI enters everyday use for coding, writing, and creative work.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 6: EMS OVERVIEW ===== -->
+<div id="page-ems-overview" class="page accent-green">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 6 — Emergency Medical Services</div>
+      <h1 class="page-hero-title"><em>EMS</em> Overview</h1>
+      <p class="page-hero-desc">Emergency Medical Services — the systems, people, and protocols that save lives in critical situations every day.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="ems-grid" style="margin-bottom:3rem">
+      <div class="ems-metric"><div class="ems-value">911</div><div class="ems-label">Universal Emergency Number</div></div>
+      <div class="ems-metric"><div class="ems-value">&lt;8min</div><div class="ems-label">Target Response Time (Urban)</div></div>
+      <div class="ems-metric"><div class="ems-value">3 Tiers</div><div class="ems-label">EMR / EMT / Paramedic</div></div>
+      <div class="ems-metric"><div class="ems-value">NEMS</div><div class="ems-label">National EMS Info System</div></div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:3rem">
+      <div>
+        <div class="section-tag">// EMS System Components</div>
+        <h2 class="section-title" style="font-size:1.8rem">The EMS Chain</h2>
+        <div style="display:grid;gap:0.75rem">
+          <div class="card" style="padding:1rem;border-left:3px solid var(--accent3)">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent3)">1. Public Access &amp; Detection</div>
+            <div class="card-body" style="font-size:0.8rem">Bystander recognition of emergency. Calling 911. Public CPR and AED programs that bridge response gaps.</div>
+          </div>
+          <div class="card" style="padding:1rem;border-left:3px solid var(--accent1)">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent1)">2. Dispatch</div>
+            <div class="card-body" style="font-size:0.8rem">Emergency Medical Dispatch (EMD). CAD systems. Priority dispatch with pre-arrival instructions to callers.</div>
+          </div>
+          <div class="card" style="padding:1rem;border-left:3px solid var(--accent2)">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent2)">3. Field Response</div>
+            <div class="card-body" style="font-size:0.8rem">BLS / ALS units responding. Scene assessment. Patient care. Continuous communication with medical direction.</div>
+          </div>
+          <div class="card" style="padding:1rem;border-left:3px solid var(--accent4)">
+            <div class="card-title" style="font-size:0.9rem;color:var(--accent4)">4. Hospital Care</div>
+            <div class="card-body" style="font-size:0.8rem">Definitive care. Trauma centers, cath labs, stroke centers. Pre-notification improves outcomes dramatically.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-tag">// Provider Levels</div>
+        <h2 class="section-title" style="font-size:1.8rem">Provider Certification</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Level</th><th>Training</th><th>Key Skills</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--accent3)">EMR</td><td>40–60 hrs</td><td>CPR, AED, bleeding control</td></tr>
+              <tr><td style="color:var(--accent1)">EMT-B</td><td>120–150 hrs</td><td>BLS, oxygen, splinting</td></tr>
+              <tr><td style="color:var(--accent2)">AEMT</td><td>300–400 hrs</td><td>IV/IO, some medications</td></tr>
+              <tr><td style="color:var(--accent4)">Paramedic</td><td>1,200–1,800 hrs</td><td>ALS, intubation, 12-lead ECG</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="highlight-box green" style="margin-top:1.5rem">
+          <div class="highlight-title green">The Golden Hour</div>
+          <div class="highlight-text">Trauma surgery within 60 minutes of injury dramatically improves survival. Modern EMS systems optimize every minute of the care timeline to get patients to definitive care faster.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 7: EMS PROTOCOLS ===== -->
+<div id="page-ems-protocols" class="page accent-green">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 7 — EMS Protocols &amp; Triage</div>
+      <h1 class="page-hero-title">EMS <em>Protocols</em></h1>
+      <p class="page-hero-desc">Standardized clinical protocols that guide EMS providers from scene assessment through patient handoff.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-tag">// START Triage System</div>
+    <h2 class="section-title" style="font-size:1.8rem">Mass Casualty Triage</h2>
+    <p class="section-desc" style="margin-bottom:2rem">START (Simple Triage and Rapid Treatment) is used in mass casualty incidents to quickly classify patients by severity and survivability.</p>
+    <div class="card-grid" style="margin-bottom:3rem">
+      <div class="card" style="border-left:4px solid #39ff7e">
+        <span class="card-icon">🟢</span>
+        <div class="card-title" style="color:#39ff7e">Minor (Green)</div>
+        <div class="card-body">"Walking wounded." Delayed care. Can walk, follow commands. Minor injuries only. Can wait hours for treatment.</div>
+      </div>
+      <div class="card" style="border-left:4px solid #ffcc00">
+        <span class="card-icon">🟡</span>
+        <div class="card-title" style="color:#ffcc00">Delayed (Yellow)</div>
+        <div class="card-body">Serious but stable. Breathing, pulse present. Can survive 4–6 hours without treatment. Second priority for care.</div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--accent2)">
+        <span class="card-icon">🔴</span>
+        <div class="card-title" style="color:var(--accent2)">Immediate (Red)</div>
+        <div class="card-body">Life-threatening but salvageable. Requires immediate intervention. Airway obstruction, severe hemorrhage, shock.</div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--muted)">
+        <span class="card-icon">⚫</span>
+        <div class="card-title" style="color:var(--muted)">Expectant (Black)</div>
+        <div class="card-body">Deceased or unsurvivable injuries. No respirations after airway repositioning, or injuries incompatible with survival.</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-tag">// ABCDE Assessment</div>
+        <h2 class="section-title" style="font-size:1.6rem">Primary Survey</h2>
+        <div style="display:grid;gap:0.5rem">
+          <div style="display:flex;gap:1rem;align-items:start;padding:0.75rem;background:var(--card);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--accent1);min-width:2rem">A</div>
+            <div><div style="font-weight:600;font-size:0.9rem">Airway</div><div style="font-size:0.8rem;color:var(--muted)">Is airway patent? Head-tilt chin-lift, jaw thrust, suction, OPA/NPA.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:start;padding:0.75rem;background:var(--card);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--accent3);min-width:2rem">B</div>
+            <div><div style="font-weight:600;font-size:0.9rem">Breathing</div><div style="font-size:0.8rem;color:var(--muted)">Rate, depth, effort. SpO2. BVM ventilation if inadequate. Seal open chest wounds.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:start;padding:0.75rem;background:var(--card);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--accent2);min-width:2rem">C</div>
+            <div><div style="font-weight:600;font-size:0.9rem">Circulation</div><div style="font-size:0.8rem;color:var(--muted)">Pulse rate/quality. Control bleeding (tourniquets, hemostatics). IV/IO access.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:start;padding:0.75rem;background:var(--card);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--accent4);min-width:2rem">D</div>
+            <div><div style="font-weight:600;font-size:0.9rem">Disability</div><div style="font-size:0.8rem;color:var(--muted)">GCS, pupils (PERRL), blood glucose. Signs of neuro compromise.</div></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:start;padding:0.75rem;background:var(--card);border-radius:6px;border:1px solid var(--border)">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--muted);min-width:2rem">E</div>
+            <div><div style="font-weight:600;font-size:0.9rem">Exposure</div><div style="font-size:0.8rem;color:var(--muted)">Full body exam. Prevent hypothermia. Look for hidden injuries (back, axillae, groin).</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-tag">// Critical Interventions</div>
+        <h2 class="section-title" style="font-size:1.6rem">ALS Skill Set</h2>
+        <div class="card-grid" style="grid-template-columns:1fr 1fr">
+          <div class="card" style="padding:1rem"><div class="card-title" style="font-size:0.85rem;color:var(--accent3)">RSI</div><div class="card-body" style="font-size:0.78rem">Rapid Sequence Intubation for airway control in unresponsive patients.</div></div>
+          <div class="card" style="padding:1rem"><div class="card-title" style="font-size:0.85rem;color:var(--accent1)">12-Lead ECG</div><div class="card-body" style="font-size:0.78rem">Identify STEMI in the field. Cath lab activation before hospital arrival.</div></div>
+          <div class="card" style="padding:1rem"><div class="card-title" style="font-size:0.85rem;color:var(--accent2)">IO Access</div><div class="card-body" style="font-size:0.78rem">Intraosseous — direct bone marrow drug delivery when IV fails in arrest.</div></div>
+          <div class="card" style="padding:1rem"><div class="card-title" style="font-size:0.85rem;color:var(--accent4)">Pacing</div><div class="card-body" style="font-size:0.78rem">Transcutaneous pacing for symptomatic bradycardia unresponsive to atropine.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 8: EMS TECH ===== -->
+<div id="page-ems-tech" class="page accent-blue">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 8 — EMS Technology &amp; Innovation</div>
+      <h1 class="page-hero-title">EMS <em>Technology</em></h1>
+      <p class="page-hero-desc">How digital transformation, AI, and connected devices are revolutionizing emergency medical response.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="card-grid" style="margin-bottom:3rem">
+      <div class="card card-accent1"><span class="card-icon">🗺️</span><div class="card-title">CAD Systems</div><div class="card-body">Computer-Aided Dispatch. Integrates mapping, unit tracking, call prioritization, and electronic Patient Care Reporting (ePCR) in real time.</div></div>
+      <div class="card card-accent3"><span class="card-icon">📊</span><div class="card-title">ePCR</div><div class="card-body">Electronic Patient Care Records replace paper. Real-time data transmission to hospitals. Quality improvement analytics. Fewer errors.</div></div>
+      <div class="card card-accent2"><span class="card-icon">🤖</span><div class="card-title">AI Dispatch</div><div class="card-body">Machine learning predicts call volume, optimizes unit positioning, and assists dispatchers in real-time triage scoring for priority assignment.</div></div>
+      <div class="card card-accent4"><span class="card-icon">💓</span><div class="card-title">Wearable Monitoring</div><div class="card-body">Continuous 12-lead ECG, SpO2, ETCO2 transmission to hospitals. Cardiologists see the patient's trace before ambulance arrives.</div></div>
+      <div class="card card-accent1"><span class="card-icon">🚁</span><div class="card-title">Drone AED Delivery</div><div class="card-body">Autonomous drones deploy AEDs to cardiac arrest scenes, often arriving before traditional ambulances in rural or congested areas.</div></div>
+      <div class="card card-accent3"><span class="card-icon">🔗</span><div class="card-title">Blockchain in EMS</div><div class="card-body">Immutable patient records, pharmaceutical supply chain integrity, and cross-agency credential verification using distributed ledgers.</div></div>
+    </div>
+
+    <div class="section-tag">// Blockchain + EMS Integration</div>
+    <h2 class="section-title" style="font-size:1.8rem">Where Blockchain Meets Emergency Care</h2>
+    <div class="two-col">
+      <div>
+        <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem">The intersection of blockchain and EMS represents a powerful new frontier. Patient care data stored on permissioned blockchain networks ensures privacy while enabling seamless sharing between EMS agencies, hospitals, and specialists.</p>
+        <div class="highlight-box">
+          <div class="highlight-title">Use Case: Universal Patient Record</div>
+          <div class="highlight-text">A cardiac arrest patient's medical history, allergies, and advance directives stored on a blockchain are instantly accessible to any authorized paramedic with a smartphone — even in a different state or country.</div>
+        </div>
+        <div class="highlight-box orange" style="margin-top:1rem">
+          <div class="highlight-title orange">Use Case: Drug Chain of Custody</div>
+          <div class="highlight-text">Controlled substances (morphine, fentanyl) tracked via blockchain from pharmacy to ambulance to patient — eliminating diversion and ensuring audit trails for every dose.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-tag">// Key Technologies</div>
+        <h3 style="font-family:var(--font-head);font-weight:700;font-size:1rem;margin-bottom:1rem">Technology Stack</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem">
+          <span class="tech-badge">HL7 FHIR</span>
+          <span class="tech-badge">NEMSIS</span>
+          <span class="tech-badge">Hyperledger</span>
+          <span class="tech-badge orange">HIPAA</span>
+          <span class="tech-badge orange">CAD/RMS</span>
+          <span class="tech-badge green">ePCR</span>
+          <span class="tech-badge green">IoT Sensors</span>
+          <span class="tech-badge purple">AI Triage</span>
+          <span class="tech-badge purple">Telemedicine</span>
+          <span class="tech-badge">GPS/AVL</span>
+        </div>
+        <div class="code-block" style="font-size:0.75rem">
+          <span class="code-lang">Blockchain EMS</span>
+<span class="cm">// EMS Patient Record on Blockchain</span>
+{
+  <span class="str">"patientId"</span>: <span class="str">"0xA3f...9e2"</span>,
+  <span class="str">"callTime"</span>: <span class="str">"2025-03-11T14:22:00Z"</span>,
+  <span class="str">"vitals"</span>: {
+    <span class="str">"hr"</span>: <span class="num">88</span>,
+    <span class="str">"spo2"</span>: <span class="num">94</span>,
+    <span class="str">"bp"</span>: <span class="str">"142/88"</span>,
+    <span class="str">"gcs"</span>: <span class="num">14</span>
+  },
+  <span class="str">"providerID"</span>: <span class="str">"EMS-P-02847"</span>,
+  <span class="str">"prevHash"</span>: <span class="str">"0xF9e8..."</span>
+}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 9: GLOSSARY ===== -->
+<div id="page-glossary" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 9 — Master Glossary</div>
+      <h1 class="page-hero-title" style="color:var(--text)">Knowledge <span style="color:var(--accent1)">Glossary</span></h1>
+      <p class="page-hero-desc">Every key term across Blockchain, Technopedia, and EMS — defined clearly.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="search-bar">
+      <input class="search-input" id="glossSearch" type="text" placeholder="Filter terms..." oninput="filterGloss()">
+    </div>
+    <div class="section-tag">// Blockchain Terms</div>
+    <h3 style="font-family:var(--font-head);font-weight:700;font-size:1.1rem;margin-bottom:1rem;color:var(--accent1)">Blockchain &amp; Web3</h3>
+    <div class="glossary-list" id="glossList">
+      <div class="glossary-item" data-tags="hash blockchain"><span class="glossary-term">Hash</span><span class="glossary-def">A fixed-length output produced by a cryptographic hash function (e.g., SHA-256). Deterministic: same input always produces same output. One-way: cannot reverse-engineer input from output.</span></div>
+      <div class="glossary-item" data-tags="node blockchain network"><span class="glossary-term">Node</span><span class="glossary-def">A participant in a blockchain network that maintains a copy of the ledger and validates transactions. Full nodes store the entire chain; light nodes store headers only.</span></div>
+      <div class="glossary-item" data-tags="mining pow consensus"><span class="glossary-term">Mining</span><span class="glossary-def">The process of validating transactions and adding new blocks to a Proof-of-Work blockchain by solving computationally expensive cryptographic puzzles.</span></div>
+      <div class="glossary-item" data-tags="wallet private key crypto"><span class="glossary-term">Crypto Wallet</span><span class="glossary-def">Software storing private/public key pairs. Does not store coins — it stores keys that prove ownership of on-chain assets. Hot (online) vs Cold (hardware) wallets.</span></div>
+      <div class="glossary-item" data-tags="dao governance decentralized"><span class="glossary-term">DAO</span><span class="glossary-def">Decentralized Autonomous Organization. A community governed by smart contracts and token voting rather than traditional hierarchy or legal structure.</span></div>
+      <div class="glossary-item" data-tags="layer 2 scaling rollup"><span class="glossary-term">Layer 2</span><span class="glossary-def">Scaling solutions built on top of base blockchains. Optimistic rollups (Arbitrum) and ZK rollups (zkSync) process transactions off-chain and post proofs to L1.</span></div>
+      <div class="glossary-item" data-tags="defi liquidity pool amm"><span class="glossary-term">Liquidity Pool</span><span class="glossary-def">Smart-contract-locked pairs of tokens enabling decentralized trading. Liquidity providers earn fees. AMMs (Automated Market Makers) like Uniswap use the x*y=k formula.</span></div>
+
+      <div style="padding:1rem 0"><div class="section-tag">// EMS Terms</div><h3 style="font-family:var(--font-head);font-weight:700;font-size:1.1rem;color:var(--accent3)">Emergency Medical Services</h3></div>
+      <div class="glossary-item" data-tags="bls basic life support emt"><span class="glossary-term">BLS</span><span class="glossary-def">Basic Life Support. Foundational emergency care including CPR, AED use, airway management with BVM, and hemorrhage control. Provided by EMT-Basics.</span></div>
+      <div class="glossary-item" data-tags="als advanced life support paramedic"><span class="glossary-term">ALS</span><span class="glossary-def">Advanced Life Support. Expanded care including IV/IO access, medication administration, intubation, cardiac monitoring, and 12-lead ECG. Provided by Paramedics.</span></div>
+      <div class="glossary-item" data-tags="triage start mass casualty"><span class="glossary-term">Triage</span><span class="glossary-def">Systematic sorting of patients by injury severity and survivability. Maximizes lives saved with limited resources. START, SALT, and JUMPSTART are common systems.</span></div>
+      <div class="glossary-item" data-tags="gcs glasgow coma scale neuro"><span class="glossary-term">GCS</span><span class="glossary-def">Glasgow Coma Scale. 3–15 neurological assessment scoring eye opening (1-4), verbal response (1-5), and motor response (1-6). &lt;9 = severe TBI.</span></div>
+      <div class="glossary-item" data-tags="capnography etco2 co2 monitoring"><span class="glossary-term">Capnography</span><span class="glossary-def">Continuous monitoring of end-tidal CO2. Confirms endotracheal tube placement, monitors CPR quality, and detects return of spontaneous circulation (ROSC).</span></div>
+
+      <div style="padding:1rem 0"><div class="section-tag">// Tech Terms</div><h3 style="font-family:var(--font-head);font-weight:700;font-size:1.1rem;color:var(--accent2)">Technology</h3></div>
+      <div class="glossary-item" data-tags="api rest endpoint integration"><span class="glossary-term">API</span><span class="glossary-def">Application Programming Interface. A defined set of methods allowing applications to communicate. REST APIs use HTTP verbs (GET, POST, PUT, DELETE) over standard protocols.</span></div>
+      <div class="glossary-item" data-tags="kubernetes docker container orchestration"><span class="glossary-term">Kubernetes</span><span class="glossary-def">Open-source container orchestration system automating deployment, scaling, and management of containerized applications. Originally from Google; now CNCF.</span></div>
+      <div class="glossary-item" data-tags="zero trust security architecture network"><span class="glossary-term">Zero Trust</span><span class="glossary-def">Security model assuming no implicit trust for any user or device inside or outside the network perimeter. "Never trust, always verify." Uses MFA, least-privilege access.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 10: QUIZ ===== -->
+<div id="page-quiz" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-tag">// Page 10 — Knowledge Assessment</div>
+      <h1 class="page-hero-title" style="color:var(--text)">Knowledge <span style="color:var(--accent4)">Quiz</span></h1>
+      <p class="page-hero-desc">Test your understanding of Blockchain, Technopedia, and EMS concepts. 10 questions covering all topics.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div style="max-width:640px;margin:0 auto">
+      <div id="quizComplete" style="display:none;text-align:center;padding:3rem">
+        <div style="font-size:4rem;margin-bottom:1rem">🏆</div>
+        <h2 style="font-family:var(--font-head);font-weight:800;font-size:2rem;margin-bottom:0.5rem">Quiz Complete!</h2>
+        <p id="quizScore" style="font-family:var(--font-mono);font-size:1rem;color:var(--accent1);margin-bottom:1.5rem"></p>
+        <button class="btn-primary" onclick="restartQuiz()">Retake Quiz</button>
+      </div>
+      <div id="quizArea">
+        <div class="quiz-card">
+          <div class="quiz-counter" id="quizCounter">Question 1 / 10</div>
+          <div class="quiz-q" id="quizQ"></div>
+          <div class="quiz-options" id="quizOpts"></div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+          <div class="quiz-nav">
+            <span class="quiz-counter" id="scoreDisplay">Score: 0</span>
+            <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer" id="mainFooter">
+  <div class="footer-logo">Dev<span>Dut</span>.in</div>
+  <div class="footer-sub">BLOCKCHAIN · TECHNOPEDIA · EMS KNOWLEDGE HUB</div>
+  <div class="footer-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('blockchain-intro')">Blockchain</a>
+    <a onclick="showPage('technopedia')">Technopedia</a>
+    <a onclick="showPage('ems-overview')">EMS</a>
+    <a onclick="showPage('glossary')">Glossary</a>
+    <a onclick="showPage('quiz')">Quiz</a>
+  </div>
+  <div class="footer-copy">© 2025 devdut.in — All Rights Reserved</div>
+</footer>
+
+<script>
+// ===== PAGE NAVIGATION =====
+const pages = ['home','blockchain-intro','crypto-assets','smart-contracts','technopedia','ems-overview','ems-protocols','ems-tech','glossary','quiz'];
+
+function showPage(id) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    const nav = document.getElementById('nav-' + p);
+    if (el) el.classList.remove('active');
+    if (nav) nav.classList.remove('active');
+  });
+  const target = document.getElementById('page-' + id);
+  const navTarget = document.getElementById('nav-' + id);
+  if (target) { target.classList.add('active'); window.scrollTo(0,0); }
+  if (navTarget) navTarget.classList.add('active');
+  document.getElementById('navLinks').classList.remove('open');
+}
+
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// ===== TECH SEARCH =====
+function filterTech() {
+  const q = document.getElementById('techSearch').value.toLowerCase();
+  document.querySelectorAll('#techGrid .card').forEach(card => {
+    const tags = (card.dataset.tags || '') + card.innerText.toLowerCase();
+    card.style.display = tags.includes(q) ? '' : 'none';
+  });
+}
+
+// ===== GLOSSARY SEARCH =====
+function filterGloss() {
+  const q = document.getElementById('glossSearch').value.toLowerCase();
+  document.querySelectorAll('#glossList .glossary-item').forEach(item => {
+    const tags = (item.dataset.tags || '') + item.innerText.toLowerCase();
+    item.style.display = tags.includes(q) ? '' : 'none';
+  });
+}
+
+// ===== QUIZ =====
+const questions = [
+  { q: "What property of blockchain makes past data tamper-resistant?", opts: ["Encryption only", "Immutability via chained hashes", "Password protection", "Firewall rules"], ans: 1, exp: "Each block contains the hash of the previous block. Altering one block invalidates every subsequent block — making tampering computationally infeasible." },
+  { q: "What is Proof of Stake (PoS)?", opts: ["Mining with GPU farms", "Validators lock tokens as collateral to propose/validate blocks", "A physical staking process", "A type of smart contract"], ans: 1, exp: "PoS validators 'stake' cryptocurrency as collateral. They're chosen to create blocks proportional to their stake. Far more energy-efficient than Proof of Work." },
+  { q: "A smart contract is best described as:", opts: ["A legal document on paper", "Self-executing code on blockchain that runs when conditions are met", "A government-regulated crypto token", "A type of blockchain wallet"], ans: 1, exp: "Smart contracts are programs stored on-chain that execute automatically when predetermined conditions are fulfilled — no intermediaries needed." },
+  { q: "In the START triage system, a RED tag means:", opts: ["Minor injuries — can wait", "Deceased or unsurvivable", "Immediate — life-threatening but salvageable", "Stable — delayed care"], ans: 2, exp: "RED (Immediate) means the patient has life-threatening injuries that CAN be treated and they require intervention NOW. These patients are first priority." },
+  { q: "What does GCS measure?", opts: ["Blood glucose", "Neurological status via eye, verbal, and motor response", "Oxygen saturation", "Cardiac output"], ans: 1, exp: "Glasgow Coma Scale (3-15) assesses level of consciousness: Eye Opening (1-4) + Verbal Response (1-5) + Motor Response (1-6). <9 = severe injury." },
+  { q: "Which technology enables decentralized trading without an exchange?", opts: ["Central Limit Order Book", "Automated Market Maker (AMM) with liquidity pools", "Traditional brokerage API", "SWIFT network"], ans: 1, exp: "AMMs like Uniswap use liquidity pools and the constant product formula (x*y=k) to enable permissionless token swaps without a centralized exchange." },
+  { q: "What is Edge Computing?", opts: ["Computing done at the earth's edge", "Processing data near its source to reduce latency", "A type of cloud provider", "Computing using edge cases in AI"], ans: 1, exp: "Edge computing processes data at or near the point of generation — IoT devices, local servers — reducing round-trip latency to central clouds." },
+  { q: "Capnography in EMS measures:", opts: ["Blood pressure", "Heart rate", "End-tidal CO2 (ETCO2)", "Blood glucose"], ans: 2, exp: "Capnography continuously measures end-tidal CO2. It confirms ETT placement, monitors CPR effectiveness, and detects ROSC during cardiac arrest resuscitation." },
+  { q: "What is a DAO?", opts: ["A type of crypto wallet", "A government agency", "A Decentralized Autonomous Organization governed by smart contracts and token voting", "A blockchain mining pool"], ans: 2, exp: "DAOs are community-led organizations where rules are encoded in smart contracts and members vote using governance tokens — no CEO or board needed." },
+  { q: "BLS stands for:", opts: ["Blockchain Ledger System", "Basic Life Support", "Binary Logging Schema", "Balanced Load System"], ans: 1, exp: "Basic Life Support (BLS) encompasses foundational emergency skills: CPR, AED use, bag-valve-mask ventilation, and hemorrhage control." }
+];
+
+let current = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  const q = questions[current];
+  document.getElementById('quizCounter').textContent = `Question ${current+1} / ${questions.length}`;
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+  answered = false;
+  const opts = document.getElementById('quizOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => answer(i, btn);
+    opts.appendChild(btn);
+  });
+  document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+}
+
+function answer(i, btn) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const fb = document.getElementById('quizFeedback');
+  const allOpts = document.querySelectorAll('.quiz-opt');
+  allOpts[q.ans].classList.add('correct');
+  if (i === q.ans) {
+    score++;
+    fb.textContent = '✅ Correct! ' + q.exp;
+    fb.className = 'quiz-feedback show ok';
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '❌ Incorrect. ' + q.exp;
+    fb.className = 'quiz-feedback show err';
+  }
+  document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    document.getElementById('quizArea').style.display = 'none';
+    document.getElementById('quizComplete').style.display = 'block';
+    const pct = Math.round((score / questions.length) * 100);
+    let grade = pct >= 80 ? '🔥 Excellent!' : pct >= 60 ? '👍 Good job!' : '📚 Keep studying!';
+    document.getElementById('quizScore').textContent = `You scored ${score}/${questions.length} (${pct}%) — ${grade}`;
+  } else {
+    loadQuestion();
+  }
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizComplete').style.display = 'none';
+  loadQuestion();
+}
+
+// Init quiz on load
+loadQuestion();
+</script>
+</body>
+</html>
